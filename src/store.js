@@ -31,6 +31,7 @@ import LoginSlice from "./slices/login/LoginSlice";
 import InfoSlice from "./slices/InfoSlice";
 import MyPageSlice from "./slices/MyPageSlice";
 import InterestSlice from "./slices/InterestSlice";
+import LoginStateSlice from "./slices/login/LoginStateSlice";
 
 const store = configureStore({
   reducer: {
@@ -63,6 +64,7 @@ const store = configureStore({
 
     /** 로그인, 마이페이지 */
     LoginSlice: LoginSlice,
+    LoginStateSlice: LoginStateSlice,
     InfoSlice: InfoSlice,
     MyPageSlice: MyPageSlice,
     InterestSlice: InterestSlice,

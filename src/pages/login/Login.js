@@ -6,6 +6,7 @@ import RegexHelper from '../../helper/RegexHelper';
 import { useSelector, useDispatch } from 'react-redux';
 import { makeLogin } from '../../slices/login/LoginSlice';
 import cookieHelper from '../../helper/CookieHelper';
+import { getLoginState } from '../../slices/login/LoginStateSlice';
 
 const EmailLoginCon = styled.div`
     display: flex;
@@ -86,6 +87,11 @@ const Login = memo(() => {
                 'max-age': 60 * 60 * 24,
             });
 
+            console.log("payload.item",payload.item);
+            
+            //로그인 상태 true로 변경
+            dispatch(getLoginState(true));
+            
             window.history.back();
         });
     }, []);

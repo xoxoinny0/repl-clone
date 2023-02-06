@@ -88,6 +88,7 @@ const InterestModal = memo(({IMDIsOpen, onRequestClose, idInterestData}) => {
       
       const onClickInterBtn = useCallback((e)=> {
         console.log("Click");
+
       });
 
     return (
@@ -117,7 +118,7 @@ const InterestModal = memo(({IMDIsOpen, onRequestClose, idInterestData}) => {
                     <div className='tagCon'>
                       {data2?.map((v, i) => {
                           return (
-                              <button key={v.id} className="tag" onClick={onClickInterBtn} >
+                              <button key={v.id} className={idInterestData?.find((v2,i) => v2.id === v.id)? 'tag active' :  'tag' } onClick={onClickInterBtn} >
                                   <span className='imgIcon'>{v.icon}</span>
                                   <span>{v.dsec}</span>
                               </button>

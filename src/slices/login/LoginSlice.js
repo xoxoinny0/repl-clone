@@ -45,7 +45,7 @@ export const makeLogin = createAsyncThunk('LoginSlice/makeLogin', async (payload
     } catch (err) {
         result = rejectWithValue(err.response);
     }
-
+    console.log("result: " + JSON.stringify(result));
     return result;
 });
 
@@ -59,6 +59,7 @@ const LoginSlice = createSlice({
     },
     reducers: {
         getCurrentUser: (state, action) => {
+            console.log("state" + JSON.stringify(state));
             return state;
         },
         makeLogout: (state, action) => {

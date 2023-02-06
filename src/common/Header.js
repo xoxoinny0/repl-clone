@@ -9,6 +9,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import LoginModal from "../components/login/LoginModal";
 import cookieHelper from "../helper/CookieHelper";
+import { getLoginState } from '../slices/login/LoginStateSlice';
 
 const HeaderContainer = styled.div`
   height: 50px;
@@ -162,14 +163,17 @@ const Header = memo(() => {
   const [loginInfo, setLoginInfo] = useState(null);
 
   const { data, loading } = useSelector(state => state.LoginSlice);
+  const { isLogined } = useSelector(state => state.LoginStateSlice);
 
   useEffect(() => {
     if (data?.item && typeof data.item === "object") setLoginInfo(data.item);
     else setLoginInfo(null);
   }, [data]);
+
   useEffect(() => {
     let value = cookieHelper.getCookie('loginInfo');
     if (value) setLoginInfo(JSON.parse(value));
+    console.log("value: " + JSON.stringify(value));
   }, []);
   
   const onLogout = useCallback(e => {
@@ -178,6 +182,7 @@ const Header = memo(() => {
     if (cookieHelper.getCookie('loginInfo') && window.confirm('로그아웃 하시겠습니까?')) {
       cookieHelper.deleteCookie('loginInfo');
       dispatch(makeLogout());
+      dispatch(getLoginState(false));
       window.location.reload();
     }
   }, []);
@@ -225,10 +230,10 @@ const Header = memo(() => {
           loading ? (
             <></>
           ) : (
-            loginInfo ? (
+            isLogined ? (
               <a>
                 {
-                  loginInfo.username
+                  data?.username
                 }님
               </a>
             ) : (
