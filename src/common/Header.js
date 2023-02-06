@@ -166,8 +166,13 @@ const Header = memo(() => {
   const { isLogined } = useSelector(state => state.LoginStateSlice);
 
   useEffect(() => {
-    if (data?.item && typeof data.item === "object") setLoginInfo(data.item);
+    if (data?.item && typeof data.item === "object") {
+      setLoginInfo(data.item)
+      console.log("data.item: " + data.item);
+    }
     else setLoginInfo(null);
+    console.log("isLogined", isLogined);
+    console.log("loginInfo", loginInfo);
   }, [data]);
 
   useEffect(() => {
@@ -230,10 +235,10 @@ const Header = memo(() => {
           loading ? (
             <></>
           ) : (
-            isLogined ? (
+            isLogined || loginInfo ? (
               <a>
                 {
-                  data?.username
+                  data?.username || loginInfo?.username
                 }님
               </a>
             ) : (
