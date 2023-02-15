@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BulletinMapper">
+    <!-- 단일행 조회를 위한 기능 정의 -->
+    <select id="selectItem">
+        SELECT b.title, b.postdate, b.bgcolor, b.bgimage, b.content, u.username
+        FROM bulletin AS b
+        LEFT JOIN user AS u
+        ON b.user_id = u.id
+        WHERE id=#{id};
+    </select>
+
+    <!-- 다중행 조회를 위한 기능 정의 -->
+    <select id="selectList">
+        SELECT b.id, u.id, u.username, b.title, b.postdate, b.bgcolor, b.bgimage, b.content,
+            (
+	            SELECT COUNT(*) FROM `like` AS l WHERE l.bulletin_id = b.id
+            ) AS `like`
+        FROM bulletin AS b
+        LEFT JOIN user AS u
+        ON u.id = b.user_id
+
+        <trim prefix='WHERE' prefixOverrides='AND'>
+            <if test="query != null and query != ''">
+                ( 
+                    b.title LIKE concat('%', #{query}, '%')
+                    OR 
+                    u.username LIKE concat('%', #{query}, '%')
+                )
+            </if>
+
+            <if test="tagId != null and tagId != -1">
+                AND b.id IN (
+                    SELECT bulletin_id FROM bulletin_category
+                    WHERE category_id = ${tagId}
+                )
+            </if>
+            
+            <if test="isMyPost and userId">
+                AND b.id IN (
+                    SELECT id FROM bulletin
+                    WHERE user_id = ${userId}
+                )
+            </if>
+        </trim>
+
+        <choose>
+            <when test="sortByLike == 'true'">
+                ORDER BY `like` DESC
+            </when>
+
+            <otherwise>
+                ORDER BY b.id DESC
+            </otherwise>
+        </choose>
+        
+        <!-- 페이지 구현을 위한 LIMIT절 추가 -->
+        <if test="listCount > 0">
+            LIMIT ${offset}, ${listCount}
+        </if>
+    </select>
+
+    <!-- 태그 조회를 위한 기능 정의 -->
+    <select id="selectTagsOfPosts">
+        SELECT bc.bulletin_id, c.name
+        FROM bulletin_category AS bc
+        LEFT JOIN category AS c
+        ON bc.category_id = c.id
+        ORDER BY bulletin_id ASC
+    </select>
+
+    <!-- 데이터 수 조회하기 -->
+    <select id="selectAllCount">
+        SELECT COUNT(*) AS cnt
+        FROM bulletin AS b
+        LEFT JOIN user AS u
+        ON u.id = b.user_id
+
+        <trim prefix='WHERE' prefixOverrides='AND'>
+            <if test="query != null and query != ''">
+                ( 
+                    b.title LIKE concat('%', #{query}, '%')
+                    OR 
+                    u.username LIKE concat('%', #{query}, '%')
+                )
+            </if>
+
+            <if test="tagId != null and tagId != -1">
+                AND b.id IN (
+                    SELECT bulletin_id FROM bulletin_category
+                    WHERE category_id = ${tagId}
+                )
+            </if>
+
+            <if test="isMyPost and userId">
+                AND b.id IN (
+                    SELECT id FROM bulletin
+                    WHERE user_id = ${userId}
+                )
+            </if>
+        </trim>
+    </select>
+
+    <!-- 내가 댓글쓴 장소 목록 조회 -->
+    <select id="selectMyPlaces">
+        SELECT id, place_name, road_address_name, address_name
+        FROM place
+        WHERE id IN (
+            SELECT place_id FROM review WHERE user_id = 1
+        );
+    </select>
+    <select id="selectPlacePhoto">
+        SELECT MAX(filename) AS img
+        FROM photo
+        where place_id = #{id}
+        ORDER BY id
+    </select>
+
+    <!-- 전체 카테고리 조회하기 -->
+    <select id="selectCategories">
+        SELECT * FROM category
+    </select>
+
+    <!-- 게시글 추가 -->
+    <insert id="insertItem">
+        INSERT INTO bulletin (user_id, title, postdate, bgcolor, content, bgimage)
+        VALUES (#{user_id}, #{title}, #{postdate}, #{bgcolor}, #{content}, #{bgimage});
+    </insert>
+    <insert id="insertPlaceRecommned">
+        INSERT INTO bulletin_place (bulletin_id, place_id)
+        VALUES (#{bulletin_id}, #{place_id})
+    </insert>
+    <insert id="insertPostCategory">
+        INSERT INTO bulletin_category (bulletin_id, category_id)
+        VALUES (#{bulletin_id}, #{category_id})
+    </insert>
+</mapper>

@@ -1,0 +1,41 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 50
+    },
+    "auditLog": "server\\_files\\_logs\\.379109fbf268da2560826f208651fa9cfad84385-audit.json",
+    "files": [
+        {
+            "date": 1673512966017,
+            "name": "server\\_files\\_logs\\log_230112.log",
+            "hash": "0e2ef476a07f167fae70be9099afb769eaf412a6d31854178690300bc320704b"
+        },
+        {
+            "date": 1673592863071,
+            "name": "server\\_files\\_logs\\log_230113.log",
+            "hash": "1101b2b3b9a9d78722a0b5c496fb92e8e0b41f35af71ac723c9889be9456090e"
+        },
+        {
+            "date": 1673859920810,
+            "name": "server\\_files\\_logs\\log_230116.log",
+            "hash": "d175bdae4bc418bde4f75221acb2b5ce1fd8cb0f0428495b4eb4e5b96ae8c00e"
+        },
+        {
+            "date": 1673918187421,
+            "name": "server\\_files\\_logs\\log_230117.log",
+            "hash": "3f3c9e7236c7921a1f17006a68df178759921c3a98cca88ce86484809ce0ca30"
+        },
+        {
+<<<<<<< Updated upstream
+            "date": 1674006910638,
+            "name": "server\\_files\\_logs\\log_230118.log",
+            "hash": "eb1f6561cc72c74078c3b971c0b561d17c1ec89290d3215e37761b9ac980096d"
+=======
+            "date": 1674003226339,
+            "name": "server\\_files\\_logs\\log_230118.log",
+            "hash": "8fa418032b8023166e2978b335af40881182ee78b8a1d583fc69e222e4967749"
+>>>>>>> Stashed changes
+        }
+    ],
+    "hashType": "sha256"
+}

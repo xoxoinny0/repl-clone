@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LoginMapper">
+    <!-- 회원 정보 추가 -->
+    <insert id="insertUser">
+        INSERT INTO user (userid, password, name, username, email, icon, introduction)
+        VALUES (#{userid}, #{password}, #{name}, #{username}, #{email}, #{icon}, #{introduction});
+    </insert>
+
+    <!-- 회원 정보 중복 여부 검색 -->
+    <select id="searchUser">
+        SELECT COUNT(*) AS cnt FROM user
+
+        <where>
+            <if test="fieldName = 'userid">
+                id = #{value}
+            </if>
+
+            <if test="fieldName = 'username'">
+                username = #{value}
+            </if>
+        </where>
+    </select>
+
+    <!-- 단일 회원 정보 탐색 -->
+    <select id="selectItem">
+        SELECT id, userid, name, username, email, icon, introduction
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <!-- 로그인 처리 - 아이디 탐색 -->
+    <select id="findId">
+        SELECT id, userid, password
+        FROM user
+        WHERE userid = #{userid}
+    </select>
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MapMapper">
+    <select id='selectList'>
+        SELECT id, place_name, address_name, road_address_name, lat, lng, category_item_name, phone, place_url
+        FROM place
+    </select>
+
+    <insert id='insertBookmark'>
+        INSERT INTO bookmark (user_id, place_id)
+        VALUES (#{userId}, #{placeId})
+    </insert>
+
+    <select id='selectUserBookmarkList'>
+        SELECT place_id FROM bookmark
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id='selectUserBookmarkItem'>
+        SELECT * FROM bookmark
+        WHERE user_id = #{userId} AND place_id = #{placeId}
+    </select>
+
+    <select id='selectBookmark'>
+        SELECT * FROM bookmark
+        WHERE id = #{id}
+    </select>
+
+    <delete id='deleteBookmark'>
+        DELETE FROM bookmark
+        WHERE id = #{id}
+    </delete>
+
+    <select id='selectReviews'>
+        SELECT * FROM review
+        WHERE place_id = #{placeId}
+    </select>
+
+    <select id='selectPostsId'>
+        SELECT bulletin_id FROM bulletin_place
+        WHERE place_id = #{placeId}
+    </select>
+
+    <insert id='insertReview'>
+        INSERT INTO review (user_id, place_id, comment, rating)
+        VALUES (#{userId}, #{placeId}, #{content}, #{rating})
+    </insert>
+
+    <select id='selectReview'>
+        SELECT * FROM review
+        WHERE id = #{id}
+    </select>
+
+    <insert id='insertPlace'>
+        INSERT INTO place (id, place_name, address_name, road_address_name, lat, lng, category_item_name, phone, place_url)
+        VALUES (#{id}, #{place_name}, #{address_name}, #{road_address_name}, #{lat}, #{lng}, #{category_item_name}, #{phone}, #{place_url})
+    </insert>
+
+    <select id='selectPlace'>
+        SELECT * FROM place
+        WHERE id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ThemeMapper">
+    <!-- 단일 게시글 조회를 위한 기능 정의 -->
+    <select id="selectList">
+        SELECT id, icon, `text`, (
+            SELECT COUNT(*) FROM theme_place
+            WHERE theme_id = t.id
+        ) AS user_number
+        FROM theme AS t
+    </select>
+
+    <select id="selectThemePlaces">
+        SELECT id, place_id, theme_id, user_id
+        FROM theme_place
+    </select>
+
+    <select id="selectThemePlaceItem">
+        SELECT id, place_id, theme_id, user_id
+        FROM theme_place
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insertPlaceTheme">
+        INSERT INTO theme_place (place_id, theme_id, user_id)
+        VALUES (#{placeId}, #{themeId}, #{userId})
+    </insert>
+</mapper>
